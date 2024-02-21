@@ -1,6 +1,6 @@
 {
   "name": "mongoose-gql-toolkit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A toolkit for mongoose graphql",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -30,8 +30,6 @@
   "homepage": "https://github.com/jovenlumaas/mongoose-gql-toolkit#readme",
   "devDependencies": {
     "@types/jest": "^26.0.23",
-    "@types/lodash.lowerfirst": "^4.3.9",
-    "@types/lodash.upperfirst": "^4.3.9",
     "jest": "^27.0.4",
     "prettier": "^2.3.1",
     "ts-jest": "^27.0.3",
@@ -46,9 +44,6 @@
     "dataloader": "^2.2.2",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
-    "graphql-type-json": "^0.3.2",
-    "lodash.lowerfirst": "^4.3.1",
-    "lodash.upperfirst": "^4.3.1",
     "mongoose": "^8.1.3"
   }
 }

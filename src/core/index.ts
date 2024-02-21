@@ -1,16 +1,11 @@
-import { makeSchemaCreator } from "./schema/createSchema";
-import { createFetchMethods } from "./schema/resolvers/fetch";
+import { makeSchemaCreator } from './schema/createSchema';
+import { createFetchMethods } from './schema/resolvers/fetch';
 
 // types
-import type { TAuthValidations } from "./schema/resolvers";
-import type { TResolverContext } from "../types";
+import type { TAuthValidations } from './schema/resolvers';
+import type { TResolverContext } from '../types';
 
-type TGQLMethodOptions<
-  TContext extends TResolverContext,
-  TFetchTags,
-  TModels,
-  TSchemaContext
-> = {
+type TGQLMethodOptions<TContext extends TResolverContext, TFetchTags, TModels, TSchemaContext> = {
   fetchTags: TFetchTags;
   models: TModels;
   schemaContext: TSchemaContext;
@@ -23,7 +18,7 @@ export const createGraphqlMethods = <
   /** You can provide additional context to 'CreateGraphQLSchema'. */
   TModels,
   /** Provide an object of mongoose models */
-  TSchemaContext
+  TSchemaContext,
 >({
   fetchTags,
   models,
@@ -31,14 +26,14 @@ export const createGraphqlMethods = <
   authValidations,
 }: TGQLMethodOptions<TContext, TFetchTags, TModels, TSchemaContext>) => {
   return {
-    createGraphQLSchema: makeSchemaCreator<
-      TContext,
-      TFetchTags,
-      TModels,
-      TSchemaContext
-    >({ fetchTags, models, schemaContext, authValidations }),
+    createGraphQLSchema: makeSchemaCreator<TContext, TFetchTags, TModels, TSchemaContext>({
+      fetchTags,
+      models,
+      schemaContext,
+      authValidations,
+    }),
     fetch: createFetchMethods<TFetchTags>(fetchTags),
   };
 };
 
-export * from "./schema";
+export * from './schema';
