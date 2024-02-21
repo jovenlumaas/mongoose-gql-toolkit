@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
-import lowerFirst from 'lodash.lowerfirst';
-import upperFirst from 'lodash.upperfirst';
+
+import lowerFirst from '../../utils/helpers/lowerFirst';
+import upperFirst from '../../utils/helpers/upperFirst';
 
 // types
 import type {
