@@ -1,9 +1,7 @@
 type ObjectValue = Record<string, any>;
 
 export type TrueOrObject = true | { name?: string; fragment: string };
-export type TrueOrObjectWithReturning =
-  | true
-  | { name?: string; fragment: string; returning: boolean };
+export type TrueOrObjectWithReturning = true | { name?: string; fragment: string; returning: boolean };
 export type TrueOrObjectString = true | { name: string };
 
 export interface CrudOptionProps {
@@ -15,14 +13,14 @@ export interface CrudOptionProps {
   delete?: TrueOrObjectString;
 }
 
-//** Common properties */
+// ** Common properties */
 interface GenerateGQLTag {
   addRawGql: boolean;
   pluralizedName?: string;
   inputName?: string;
 }
 
-//** Option 1: Allows the GenGQL Function to auto-generate CRUD GQLs**/
+// ** Option 1: Allows the GenGQL Function to auto-generate CRUD GQLs**/
 export interface GenerateGQLIsCrudAuto extends GenerateGQLTag {
   isCrud: boolean;
   __typename: string;
@@ -36,7 +34,7 @@ export interface GenerateGQLIsCrudAuto extends GenerateGQLTag {
   crudOptions?: never;
 }
 
-//** Option 2: The developer manually assigns CRUD GQLs thru 'crudOptions' property**/
+// ** Option 2: The developer manually assigns CRUD GQLs thru 'crudOptions' property**/
 export interface GenerateGQLUsingCrudOptions extends GenerateGQLTag {
   isCrud?: never;
   __typename: string;
@@ -47,7 +45,7 @@ export interface GenerateGQLUsingCrudOptions extends GenerateGQLTag {
   complements?: ObjectValue;
 }
 
-//** Option 3: No CRUD GQLs, the developer assigns special GQL in 'complements' property**/
+// ** Option 3: No CRUD GQLs, the developer assigns special GQL in 'complements' property**/
 export interface GenerateGQComplementsOnly extends GenerateGQLTag {
   isCrud?: never;
   __typename?: never;
@@ -58,24 +56,16 @@ export interface GenerateGQComplementsOnly extends GenerateGQLTag {
   complements: ObjectValue;
 }
 
-export type GQLTagOptions =
-  | GenerateGQLIsCrudAuto
-  | GenerateGQLUsingCrudOptions
-  | GenerateGQComplementsOnly;
+export type GQLTagOptions = GenerateGQLIsCrudAuto | GenerateGQLUsingCrudOptions | GenerateGQComplementsOnly;
 
-export type GenerateGQLTagOptions =
-  | GQLTagOptions
-  | { [key: string]: GQLTagOptions };
+export type GenerateGQLTagOptions = GQLTagOptions | { [key: string]: GQLTagOptions };
 
 export interface KeyOfDocumentNode {
   [key: string]: any;
 }
 
 export type MergedDocumentNodeType = {
-  [key: string]:
-    | KeyOfDocumentNode
-    | { [key: string]: KeyOfDocumentNode }
-    | string;
+  [key: string]: KeyOfDocumentNode | { [key: string]: KeyOfDocumentNode } | string;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +73,7 @@ export type MergedDocumentNodeType = {
  * The following is the implementation for inferring GENERATE GQL TAG RESPONSE
  */
 
-type CrudTypes = "list" | "create" | "read" | "readCache" | "update" | "delete";
+type CrudTypes = 'list' | 'create' | 'read' | 'readCache' | 'update' | 'delete';
 type MappedRaw<T> = `${string & T}Raw`;
 
 type MapIsCrudDocNode = Record<CrudTypes, string>;
@@ -92,23 +82,17 @@ type MapIsCrudDocNodeWithRaw = MapIsCrudDocNode & MapIsCrudDocNodeRaw;
 
 type MapComplementDocNode<C> = Record<keyof C, string>;
 type MapComplementDocNodeRaw<C> = Record<MappedRaw<keyof C>, string>;
-type MapComplementDocNodeWithRaw<C> = MapComplementDocNode<C> &
-  MapComplementDocNodeRaw<C>;
+type MapComplementDocNodeWithRaw<C> = MapComplementDocNode<C> & MapComplementDocNodeRaw<C>;
 
-type MapIsCrudWithComplementDocNode<C> = MapIsCrudDocNode &
-  MapComplementDocNode<C>;
-type MapIsCrudWithComplementDocNodeWithRaw<C> = MapIsCrudDocNodeWithRaw &
-  MapComplementDocNodeWithRaw<C>;
+type MapIsCrudWithComplementDocNode<C> = MapIsCrudDocNode & MapComplementDocNode<C>;
+type MapIsCrudWithComplementDocNodeWithRaw<C> = MapIsCrudDocNodeWithRaw & MapComplementDocNodeWithRaw<C>;
 
 type MapCrudOptionDocNode<O> = Record<keyof O, string>;
 type MapCrudOptionDocNodeRaw<O> = Record<MappedRaw<keyof O>, string>;
-type MapCrudOptionDocNodeWithRaw<O> = MapCrudOptionDocNode<O> &
-  MapCrudOptionDocNodeRaw<O>;
+type MapCrudOptionDocNodeWithRaw<O> = MapCrudOptionDocNode<O> & MapCrudOptionDocNodeRaw<O>;
 
-type MapCrudOptionWithComplementDocNode<O, C> = MapCrudOptionDocNode<O> &
-  MapComplementDocNode<C>;
-type MapCrudOptionWithComplementDocNodeWithRaw<O, C> =
-  MapCrudOptionDocNodeWithRaw<O> & MapComplementDocNodeWithRaw<C>;
+type MapCrudOptionWithComplementDocNode<O, C> = MapCrudOptionDocNode<O> & MapComplementDocNode<C>;
+type MapCrudOptionWithComplementDocNodeWithRaw<O, C> = MapCrudOptionDocNodeWithRaw<O> & MapComplementDocNodeWithRaw<C>;
 
 /**
  * Implements 'isCrud'
@@ -125,56 +109,52 @@ type CreateGQLIsCrud<T extends any> = T extends GenerateGQLIsCrudAuto & {
 /**
  * Implements 'isCrud' with 'complements'
  */
-type CreateGQLIsCrudWithComplement<T extends any> =
-  T extends GenerateGQLIsCrudAuto & {
-    addRawGql: infer A;
-    complements: infer C;
-  }
-    ? A extends true
-      ? MapIsCrudWithComplementDocNodeWithRaw<C>
-      : MapIsCrudWithComplementDocNode<C>
-    : never;
+type CreateGQLIsCrudWithComplement<T extends any> = T extends GenerateGQLIsCrudAuto & {
+  addRawGql: infer A;
+  complements: infer C;
+}
+  ? A extends true
+    ? MapIsCrudWithComplementDocNodeWithRaw<C>
+    : MapIsCrudWithComplementDocNode<C>
+  : never;
 
 /**
  * Implements 'complements' only
  */
-type CreateGQLComplementsOnly<T extends any> =
-  T extends GenerateGQComplementsOnly & {
-    addRawGql: infer A;
-    complements: infer C;
-  }
-    ? A extends true
-      ? MapComplementDocNodeWithRaw<C>
-      : MapComplementDocNode<C>
-    : never;
+type CreateGQLComplementsOnly<T extends any> = T extends GenerateGQComplementsOnly & {
+  addRawGql: infer A;
+  complements: infer C;
+}
+  ? A extends true
+    ? MapComplementDocNodeWithRaw<C>
+    : MapComplementDocNode<C>
+  : never;
 
 /**
  * Implements 'crudOptions'
  */
-type CreateGQLCrudOptions<T extends any> =
-  T extends GenerateGQLUsingCrudOptions & {
-    addRawGql: infer A;
-    crudOptions: infer O;
-    complements?: never;
-  }
-    ? A extends true
-      ? MapCrudOptionDocNodeWithRaw<O>
-      : MapCrudOptionDocNode<O>
-    : never;
+type CreateGQLCrudOptions<T extends any> = T extends GenerateGQLUsingCrudOptions & {
+  addRawGql: infer A;
+  crudOptions: infer O;
+  complements?: never;
+}
+  ? A extends true
+    ? MapCrudOptionDocNodeWithRaw<O>
+    : MapCrudOptionDocNode<O>
+  : never;
 
 /**
  * Implements 'crudOptions' with 'complements'
  */
-type CreateGQLCrudOptionsWithComplements<T extends any> =
-  T extends GenerateGQLUsingCrudOptions & {
-    addRawGql: infer A;
-    crudOptions: infer O;
-    complements: infer C;
-  }
-    ? A extends true
-      ? MapCrudOptionWithComplementDocNodeWithRaw<O, C>
-      : MapCrudOptionWithComplementDocNode<O, C>
-    : never;
+type CreateGQLCrudOptionsWithComplements<T extends any> = T extends GenerateGQLUsingCrudOptions & {
+  addRawGql: infer A;
+  crudOptions: infer O;
+  complements: infer C;
+}
+  ? A extends true
+    ? MapCrudOptionWithComplementDocNodeWithRaw<O, C>
+    : MapCrudOptionWithComplementDocNode<O, C>
+  : never;
 
 /**
  * Create a union to combine possible inference based on input value
@@ -197,6 +177,4 @@ type CreatGqlNestedOptions<T> = T extends {
   : never;
 
 /** Combine all possible inference for createGQL response */
-export type CreatGQLResponse<T extends any> =
-  | CreatGqlSingleOption<T>
-  | CreatGqlNestedOptions<T>;
+export type CreatGQLResponse<T extends any> = CreatGqlSingleOption<T> | CreatGqlNestedOptions<T>;

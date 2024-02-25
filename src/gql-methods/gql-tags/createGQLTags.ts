@@ -1,6 +1,6 @@
-import gql from "graphql-tag";
-import lowerFirst from "../../utils/helpers/lowerFirst";
-import upperFirst from "../../utils/helpers/upperFirst";
+import gql from 'graphql-tag';
+import lowerFirst from '../../utils/helpers/lowerFirst';
+import upperFirst from '../../utils/helpers/upperFirst';
 
 // types
 import type {
@@ -10,7 +10,7 @@ import type {
   TrueOrObject,
   TrueOrObjectWithReturning,
   TrueOrObjectString,
-} from "./__types";
+} from './__types';
 
 /**
  * This function auto-generates gql tag for queries and mutations to be used for graphql API call.
@@ -62,14 +62,10 @@ export const genGqlTags = ({
   const isRemove = isCrud ? true : deleteOption ? deleteOption : false;
 
   let isCreateReturning =
-    mutationSelectionOptions && mutationSelectionOptions.create
-      ? mutationSelectionOptions.create
-      : false;
+    mutationSelectionOptions && mutationSelectionOptions.create ? mutationSelectionOptions.create : false;
 
   let isUpdateReturning =
-    mutationSelectionOptions && mutationSelectionOptions.create
-      ? mutationSelectionOptions.update
-      : false;
+    mutationSelectionOptions && mutationSelectionOptions.create ? mutationSelectionOptions.update : false;
 
   const lowerF = lowerFirst(__typename);
   const upperF = upperFirst(__typename);
@@ -82,32 +78,28 @@ export const genGqlTags = ({
 
   // for list
   if (isList) {
-    let listName: string | undefined = "";
-    let listFragment = "";
-    let lastChar = "";
+    let listName: string | undefined = '';
+    let listFragment = '';
+    let lastChar = '';
 
     if (__typename) lastChar = __typename.slice(-1);
 
-    const pluralName = `${lowerF}${lastChar === "s" ? "es" : "s"}`;
+    const pluralName = `${lowerF}${lastChar === 's' ? 'es' : 's'}`;
 
-    if (typeof isList === "object") {
+    if (typeof isList === 'object') {
       const { name, fragment } = isList;
       listName = name;
       listFragment = fragment;
     }
 
-    const listQryName = pluralizedName
-      ? pluralizedName
-      : listName
-      ? listName
-      : pluralName;
+    const listQryName = pluralizedName ? pluralizedName : listName ? listName : pluralName;
 
     const gqlList = `
       query ${listQryName} {
         ${listQryName} {
           ${requiredFragment}
-          ${optionalFragment ? optionalFragment : ""}
-          ${listFragment ? listFragment : ""}
+          ${optionalFragment ? optionalFragment : ''}
+          ${listFragment ? listFragment : ''}
         }
       }`;
 
@@ -121,10 +113,10 @@ export const genGqlTags = ({
 
   // for read
   if (isRead) {
-    let readName: string | undefined = "";
-    let readFragment = "";
+    let readName: string | undefined = '';
+    let readFragment = '';
 
-    if (typeof isRead === "object") {
+    if (typeof isRead === 'object') {
       const { name, fragment } = isRead;
       readName = name;
       readFragment = fragment;
@@ -136,8 +128,8 @@ export const genGqlTags = ({
       query ${readQryName}($id: ID!) {
         ${readQryName}(id: $id) {
           ${requiredFragment}
-          ${optionalFragment ? optionalFragment : ""}
-          ${readFragment ? readFragment : ""}
+          ${optionalFragment ? optionalFragment : ''}
+          ${readFragment ? readFragment : ''}
         }
       }`;
     gqlTags = {
@@ -150,11 +142,11 @@ export const genGqlTags = ({
 
   // for create
   if (isCreate) {
-    let createName: string | undefined = "";
-    let createFragment = "";
+    let createName: string | undefined = '';
+    let createFragment = '';
     let createReturning = false;
 
-    if (typeof isCreate === "object") {
+    if (typeof isCreate === 'object') {
       const { name, fragment, returning } = isCreate;
       createName = name;
       createFragment = fragment;
@@ -164,11 +156,11 @@ export const genGqlTags = ({
     const createQryName = createName ? createName : `create${upperF}`;
     isCreateReturning = createReturning ? createReturning : isCreateReturning;
 
-    let createResult = isCreateReturning
+    const createResult = isCreateReturning
       ? `${createQryName}(input: $input) {
       ${requiredFragment}
-      ${optionalFragment ? optionalFragment : ""}
-      ${createFragment ? createFragment : ""}
+      ${optionalFragment ? optionalFragment : ''}
+      ${createFragment ? createFragment : ''}
     }`
       : `${createQryName}(input: $input)`;
 
@@ -186,11 +178,11 @@ export const genGqlTags = ({
 
   // for update
   if (isUpdate) {
-    let updateName: string | undefined = "";
-    let updateFragment = "";
+    let updateName: string | undefined = '';
+    let updateFragment = '';
     let updateReturning = false;
 
-    if (typeof isUpdate === "object") {
+    if (typeof isUpdate === 'object') {
       const { name, fragment, returning } = isUpdate;
       updateName = name;
       updateFragment = fragment;
@@ -200,11 +192,11 @@ export const genGqlTags = ({
     const updateQryName = updateName ? updateName : `update${upperF}`;
     isUpdateReturning = updateReturning ? updateReturning : isUpdateReturning;
 
-    let updateResult = isUpdateReturning
+    const updateResult = isUpdateReturning
       ? `${updateQryName}(input: $input) {
       ${requiredFragment}
-      ${optionalFragment ? optionalFragment : ""}
-      ${updateFragment ? updateFragment : ""}
+      ${optionalFragment ? optionalFragment : ''}
+      ${updateFragment ? updateFragment : ''}
     }`
       : `${updateQryName}(input: $input)`;
 
@@ -222,9 +214,9 @@ export const genGqlTags = ({
 
   // for delete
   if (isRemove) {
-    let deleteName = "";
+    let deleteName = '';
 
-    if (typeof isRemove === "object") {
+    if (typeof isRemove === 'object') {
       const { name } = isRemove;
       deleteName = name;
     }
@@ -285,12 +277,10 @@ export const genGqlTags = ({
  *
  * @returns - an object of gql tags for queries and mutations to be used for graphql API call.
  */
-const createGQL = <T extends GenerateGQLTagOptions>(
-  objHandlers: T
-): CreatGQLResponse<T> => {
+const createGQL = <T extends GenerateGQLTagOptions>(objHandlers: T): CreatGQLResponse<T> => {
   let allGqlTags = {} as any;
 
-  if (typeof objHandlers?.addRawGql === "boolean") {
+  if (typeof objHandlers?.addRawGql === 'boolean') {
     allGqlTags = genGqlTags(objHandlers as GQLTagOptions);
   } else {
     Object.keys(objHandlers).forEach((key) => {

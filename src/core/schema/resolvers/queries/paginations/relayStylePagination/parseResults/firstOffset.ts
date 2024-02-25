@@ -1,18 +1,18 @@
-import { parseCursorMetaData } from "./__core";
+import { parseCursorMetaData } from './__core';
 
 // types
-import type { TPageQueryResult, TPageResult } from "../__types";
+import type { TPageQueryResult, TPageResult } from '../__types';
 
 export default function firstOffsetRelayResult({
   lists,
   first,
   offset,
   direction,
-}: Pick<TPageQueryResult, "lists" | "first" | "offset" | "direction">) {
+}: Pick<TPageQueryResult, 'lists' | 'first' | 'offset' | 'direction'>) {
   let nodes: any[] = [];
   let cursorMeta = {
-    startCursor: "",
-    endCursor: "",
+    startCursor: '',
+    endCursor: '',
     totalCount: 0,
   };
 
@@ -20,9 +20,9 @@ export default function firstOffsetRelayResult({
   const hasNextPage = lists.length > first;
 
   if (lists.length > 0) {
-    if (direction === "rtl") {
+    if (direction === 'rtl') {
       const { total_count, offset_start } = lists[0] as any;
-      hasPreviousPage = offset_start > 0; //total_count > offset && offset >= first;
+      hasPreviousPage = offset_start > 0; // total_count > offset && offset >= first;
 
       if (offset < first) {
         // remove first item (which is just for determining if has previous page) since
