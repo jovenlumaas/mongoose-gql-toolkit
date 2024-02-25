@@ -1,5 +1,5 @@
-import { GraphQLError } from 'graphql';
 import mongoose from 'mongoose';
+import { GraphQLError } from 'graphql';
 
 export function buildErrorMessage(validationResult: any) {
   const errorMessages = [];
@@ -15,9 +15,9 @@ export function buildErrorMessage(validationResult: any) {
 export function testValidationError(err: any) {
   if (err) {
     if (err instanceof mongoose.Error.ValidationError) {
-      throw new GraphQLError(buildErrorMessage(err));
+      throw new GraphQLError(buildErrorMessage(err)); // ValidationError(buildErrorMessage(err))
     } else {
-      throw new GraphQLError(err.message);
+      throw new GraphQLError(err.message); // ValidationError(err.message)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { makeCreateLoaderFn } from './createLoaders';
+import { makeCreateLoaderFn } from "./createLoaders";
 
 type TDataLoaderMethodsProps<TModels, TFetchTags> = {
   models: TModels;
@@ -14,6 +14,6 @@ export const createLoaderMethods = <TModels, TFetchTags>({
   };
 };
 
-export * from './mergeLoaders';
-export * from './loaderResolvers';
-export * from './loadersInit';
+export * from "./mergeLoaders";
+export * from "./loaderResolvers";
+export * from "./loadersInit";

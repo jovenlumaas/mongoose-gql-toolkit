@@ -7,10 +7,7 @@ export type TAuthValidations<TContext extends TResolverContext = any> = Record<
   TResolverFn<TContext>
 >;
 
-type TModuleAccessKey = any;
-type TModuleAccessLevel = any;
-
-export type TAccessValidationTuple = [TModuleAccessKey, TModuleAccessLevel];
+export type TAccessValidationTuple<T = any, U = any> = [T, U];
 
 export type TCreateResolverFn<TContext extends TResolverContext = any> = (
   resolver: TResolverFn<TContext>
@@ -36,8 +33,8 @@ export const requiresAuthValidations = (authValidations: TAuthValidations) =>
   });
 
 export const requiresAccessValidations =
-  (authValidations: TAuthValidations) =>
-  (accessValidations: TAccessValidationTuple[]) =>
+  <T = any, U = any>(authValidations: TAuthValidations) =>
+  (accessValidations: TAccessValidationTuple<T, U>[]) =>
     requiresAuthValidations(authValidations).createResolver(
       async (parent, arg, ...rest) => {
         await authValidations.access(

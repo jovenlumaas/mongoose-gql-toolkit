@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 import {
   // common
@@ -23,7 +23,7 @@ import {
   buildErrorMessage,
   testValidationError,
   runOffsetLimitPaginationQuery,
-} from './resolvers';
+} from "./resolvers";
 
 // types
 import type {
@@ -47,29 +47,38 @@ import type {
   TMakeRestoreDeletedOneResolverFn,
   TAuthValidations,
   TCreatePermissionsFn,
-} from './resolvers';
-import type { DocumentNode } from 'graphql';
-import type { TResolverContext, TSchemaModule } from '../../types';
+} from "./resolvers";
+import type { DocumentNode } from "graphql";
+import type { TResolverContext, TSchemaModule } from "../../types";
 
 type CreateSchemaCallbackParams<
   TContext extends TResolverContext = any,
   TFetchTags = any,
   TModels = any,
   TSchemaContext = any,
-  TModelType = any,
+  TModelType = any
 > = TSchemaContext & {
   models: TModels;
-  gql: (template: TemplateStringsArray | string, ...substitutions: any[]) => DocumentNode;
-  createResolver: ReturnType<TCreatePermissionsFn<TContext>>['createResolver'];
-  requiresAuth: ReturnType<TCreatePermissionsFn<TContext>>['requiresAuth'];
-  requiresAccess: ReturnType<TCreatePermissionsFn<TContext>>['requiresAccess'];
-  requiresAdmin: ReturnType<TCreatePermissionsFn<TContext>>['requiresAdmin'];
-  requiresRestriction: ReturnType<TCreatePermissionsFn<TContext>>['requiresRestriction'];
+  gql: (
+    template: TemplateStringsArray | string,
+    ...substitutions: any[]
+  ) => DocumentNode;
+  createResolver: ReturnType<TCreatePermissionsFn<TContext>>["createResolver"];
+  requiresAuth: ReturnType<TCreatePermissionsFn<TContext>>["requiresAuth"];
+  requiresAccess: ReturnType<TCreatePermissionsFn<TContext>>["requiresAccess"];
+  requiresAdmin: ReturnType<TCreatePermissionsFn<TContext>>["requiresAdmin"];
+  requiresRestriction: ReturnType<
+    TCreatePermissionsFn<TContext>
+  >["requiresRestriction"];
   // common
   fetch: ReturnType<TCreateFetchMethodsFn<TFetchTags>>;
   // queries
-  relayStylePaginationResolver: ReturnType<TMakeRelayStylePaginationResolverFn<TContext>>;
-  offsetLimitPaginationResolver: ReturnType<TMakeOffsetLimitPaginationResolverFn<TContext>>;
+  relayStylePaginationResolver: ReturnType<
+    TMakeRelayStylePaginationResolverFn<TContext>
+  >;
+  offsetLimitPaginationResolver: ReturnType<
+    TMakeOffsetLimitPaginationResolverFn<TContext>
+  >;
   findAllResolver: ReturnType<TMakeFindAllResolverFn<TContext>>;
   findByIdResolver: ReturnType<TMakeFindByIdResolverFn<TContext>>;
   findOneResolver: ReturnType<TMakeFindOneResolverFn<TContext>>;
@@ -82,7 +91,9 @@ type CreateSchemaCallbackParams<
   createOneResolver: ReturnType<TMakeCreateOneResolverFn<TContext>>;
   updateOneResolver: ReturnType<TMakeUpdateOneResolverFn<TContext>>;
   deleteOneResolver: ReturnType<TMakeDeleteOneResolverFn<TContext>>;
-  restoreDeletedOneResolver: ReturnType<TMakeRestoreDeletedOneResolverFn<TContext>>;
+  restoreDeletedOneResolver: ReturnType<
+    TMakeRestoreDeletedOneResolverFn<TContext>
+  >;
   buildErrorMessage: typeof buildErrorMessage;
   testValidationError: typeof testValidationError;
   runOffsetLimitPaginationQuery: typeof runOffsetLimitPaginationQuery;
@@ -93,12 +104,23 @@ type CreateSchemaCallback<
   TFetchTags = any,
   TModels = any,
   TSchemaContext = any,
-  TModelType = any,
+  TModelType = any
 > = (
-  options: CreateSchemaCallbackParams<TContext, TFetchTags, TModels, TSchemaContext, TModelType>,
+  options: CreateSchemaCallbackParams<
+    TContext,
+    TFetchTags,
+    TModels,
+    TSchemaContext,
+    TModelType
+  >
 ) => TSchemaModule<TContext>;
 
-type TCreateSchemaOptions<TContext extends TResolverContext, TFetchTags = any, TModels = any, TSchemaContext = any> = {
+type TCreateSchemaOptions<
+  TContext extends TResolverContext,
+  TFetchTags = any,
+  TModels = any,
+  TSchemaContext = any
+> = {
   fetchTags: TFetchTags;
   models: TModels;
   schemaContext: TSchemaContext;
@@ -109,7 +131,7 @@ export const makeSchemaCreator = <
   TContext extends TResolverContext,
   TFetchTags = any,
   TModels = any,
-  TSchemaContext = any,
+  TSchemaContext = any
 >({
   fetchTags,
   models,
@@ -126,7 +148,13 @@ export const makeSchemaCreator = <
   // mutations
   return function createSchema<TModelType = any>(
     modelName: keyof TModels,
-    callbackFn: CreateSchemaCallback<TContext, TFetchTags, TModels, TSchemaContext, TModelType>,
+    callbackFn: CreateSchemaCallback<
+      TContext,
+      TFetchTags,
+      TModels,
+      TSchemaContext,
+      TModelType
+    >
   ) {
     return callbackFn({
       // for typeDefs
@@ -135,8 +163,14 @@ export const makeSchemaCreator = <
       ...createPermissions(authValidations),
       fetch,
       // for queries
-      relayStylePaginationResolver: makeRelayStylePaginationResolverFn(modelName, authValidations),
-      offsetLimitPaginationResolver: makeOffsetLimitPaginationResolverFn(modelName, authValidations),
+      relayStylePaginationResolver: makeRelayStylePaginationResolverFn(
+        modelName,
+        authValidations
+      ),
+      offsetLimitPaginationResolver: makeOffsetLimitPaginationResolverFn(
+        modelName,
+        authValidations
+      ),
       findAllResolver: makeFindAllResolverFn(modelName, authValidations),
       findByIdResolver: makeFindByIdResolverFn(modelName, authValidations),
       findOneResolver: makeFindOneResolverFn(modelName, authValidations),
@@ -149,7 +183,10 @@ export const makeSchemaCreator = <
       createOneResolver: makeCreateOneResolverFn(modelName, authValidations),
       updateOneResolver: makeUpdateOneResolverFn(modelName, authValidations),
       deleteOneResolver: makeDeleteOneResolverFn(modelName, authValidations),
-      restoreDeletedOneResolver: makeRestoreDeletedOneResolverFn(modelName, authValidations),
+      restoreDeletedOneResolver: makeRestoreDeletedOneResolverFn(
+        modelName,
+        authValidations
+      ),
       // for other contexts
       ...schemaContext,
       buildErrorMessage,

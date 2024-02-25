@@ -1,4 +1,4 @@
-export * from './mergeSchema';
+export * from "./mergeSchema";
 export {
   createLoaderMethods,
   mergeLoaders,
@@ -7,4 +7,4 @@ export {
   buildErrorMessage,
   loadersInit,
   testValidationError,
-} from './resolvers';
+} from "./resolvers";

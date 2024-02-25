@@ -1,4 +1,5 @@
 import DataLoader from 'dataloader';
+
 // types
 import type { TLoaderInfo } from './__types';
 

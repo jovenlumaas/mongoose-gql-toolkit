@@ -1,5 +1,6 @@
 import { generateLoader } from "./__core";
 import { createFetchMethods } from "../fetch";
+
 // types
 import type { TLoaderInfoMap, TDataLoaderInit } from "./__types";
 

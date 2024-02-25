@@ -1,12 +1,15 @@
-import { parseCursorMetaData } from './__core';
+import { parseCursorMetaData } from "./__core";
 // types
-import type { TPageQueryResult, TPageResult } from '../__types';
+import type { TPageQueryResult, TPageResult } from "../__types";
 
-export default function firstAfterRelayResult({ lists, first }: Pick<TPageQueryResult, 'lists' | 'first'>) {
+export default function firstAfterRelayResult({
+  lists,
+  first,
+}: Pick<TPageQueryResult, "lists" | "first">) {
   let nodes: any[] = [];
   let cursorMeta = {
-    startCursor: '',
-    endCursor: '',
+    startCursor: "",
+    endCursor: "",
     totalCount: 0,
   };
 
@@ -22,7 +25,7 @@ export default function firstAfterRelayResult({ lists, first }: Pick<TPageQueryR
     cursorMeta = parseCursorMetaData(nodes);
 
     // validate hasPreviousPage
-    const { prev_page_count = '0' } = nodes[0];
+    const { prev_page_count = "0" } = nodes[0];
     const prevPageCount = parseInt(prev_page_count, prev_page_count);
     hasPreviousPage = !isNaN(prevPageCount) && prevPageCount > 0;
   }

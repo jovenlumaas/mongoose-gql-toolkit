@@ -1,17 +1,20 @@
-import { encrypt } from '../../../../../../../utils';
+import { encrypt } from "../../../../../../../utils";
+
 // types
-import type { TPageNode } from '../__types';
+import type { TPageNode } from "../__types";
 
 export const parseCursorMetaData = (nodes: TPageNode[]) => {
-  let startCursor = '';
-  let endCursor = '';
+  let startCursor = "";
+  let endCursor = "";
   let totalCount = 0;
 
   if (nodes.length > 0) {
     // for startCursor and totalCount
     const { id: startId, createdAt: startCreatedAt, total_count } = nodes[0];
 
-    startCursor = encrypt(JSON.stringify({ id: startId, createdAt: startCreatedAt }));
+    startCursor = encrypt(
+      JSON.stringify({ id: startId, createdAt: startCreatedAt })
+    );
     totalCount = total_count;
 
     // for endCursor

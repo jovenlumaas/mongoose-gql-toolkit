@@ -1,12 +1,15 @@
-import { parseCursorMetaData } from './__core';
+import { parseCursorMetaData } from "./__core";
 // types
-import type { TPageQueryResult, TPageResult } from '../__types';
+import type { TPageQueryResult, TPageResult } from "../__types";
 
-export default function lastOffsetRelayResult({ lists, last }: Pick<TPageQueryResult, 'lists' | 'last'>) {
+export default function lastOffsetRelayResult({
+  lists,
+  last,
+}: Pick<TPageQueryResult, "lists" | "last">) {
   let nodes: any[] = [];
   let cursorMeta = {
-    startCursor: '',
-    endCursor: '',
+    startCursor: "",
+    endCursor: "",
     totalCount: 0,
   };
 

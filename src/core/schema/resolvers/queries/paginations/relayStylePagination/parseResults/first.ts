@@ -1,23 +1,23 @@
-import { parseCursorMetaData } from './__core';
+import { parseCursorMetaData } from "./__core";
 // types
-import type { TPageQueryResult, TPageResult } from '../__types';
+import type { TPageQueryResult, TPageResult } from "../__types";
 
 export default function firstRelayResult({
   lists,
   direction,
   first,
-}: Pick<TPageQueryResult, 'lists' | 'direction' | 'first'>) {
+}: Pick<TPageQueryResult, "lists" | "direction" | "first">) {
   let nodes: any[] = [];
   let cursorMeta = {
-    startCursor: '',
-    endCursor: '',
+    startCursor: "",
+    endCursor: "",
     totalCount: 0,
   };
 
   const hasNextPage = lists.length > first;
 
   if (lists.length > 0) {
-    if (direction === 'rtl') {
+    if (direction === "rtl") {
       // remove first item (which is just for determining if has previous page) since
       // in sql execution the LIMIT param is increased by 1
       // slice only the remainder
